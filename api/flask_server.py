@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('Instagram.html')  # Asegúrate de que Instagram.html esté en la carpeta templates
+    return render_template('index.html')  # Asegúrate de que Instagram.html esté en la carpeta templates
 
 @app.route('/submit', methods=['POST'])
 def submit():
