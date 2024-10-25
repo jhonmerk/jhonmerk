@@ -17,5 +17,5 @@ def submit():
     # print(f"Nombre: {username}, Contraseña: {password}")
     return f"Datos recibidos: {username}, Contraseña: {password}"
 
-#if __name__ == '__main__':
- #   app.run(port=10001)
+if __name__ == '__main__':
+   app.run()
