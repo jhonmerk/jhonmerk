@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Verifica que 'index.html' está en la carpeta 'templates'
+    return render_template('index.html') 
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -13,4 +13,4 @@ def submit():
     return f"Datos recibidos: {username}, Contraseña: {password}"
 
 if __name__ == '__main__':
-    app.run(port=5001)  # Habilita el modo de depuración
+    app.run(port=5001)
