@@ -1,16 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import instaloader
 import pymongo
 from pymongo import MongoClient
 
-app = Flask(__name__)
-
-from flask import Flask, request, render_template, jsonify
-import instaloader
-import pymongo  # Para MongoDB (sustituir por otro dependiendo de tu base de datos)
-from pymongo import MongoClient
-
-# Inicializar Flask
 app = Flask(__name__)
 
 # Conexión con la base de datos MongoDB
