@@ -1,4 +1,4 @@
 Flask==2.1.2
 Werkzeug==2.0.3
-instaloader==4.9.10
+instaloader
 pymongo==3.12.1
