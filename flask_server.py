@@ -40,28 +40,7 @@ def submit():
     else:
         return jsonify({"error": "Credenciales incorrectas"}), 400
 
+#if __name__ == '__main__':
+ #   app.run(port=5001)
 if __name__ == '__main__':
     app.run(debug=True)
-
-def check_instagram_credentials(email, password):
-    loader = instaloader.Instaloader()
-    try:
-        loader.login(email, password)  # Intentar iniciar sesión
-        return True
-    except instaloader.exceptions.BadCredentialsException:
-        return False
-    except Exception as e:
-        return False
-
-@app.route('/')
-def index():
-    return render_template('index.html') 
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    username = request.form['username']
-    password = request.form['password']
-    return f"Datos recibidos: {username}, Contraseña: {password}"
-
-if __name__ == '__main__':
-    app.run(port=5001)
