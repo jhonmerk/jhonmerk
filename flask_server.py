@@ -4,6 +4,9 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
 import logging
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 
