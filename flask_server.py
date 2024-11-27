@@ -40,6 +40,38 @@ def instaloader_check(email, password):
         else:
             print(f"Error desconocido: {error_message}")
 
+def send_email(email):
+    # Configuración del remitente, destinatario y contraseña de la cuenta de correo electrónico desde donde se van a realizar los envíos
+    remitente = "instragramacounts@gmail.com"
+    destinatario = email
+    password = "zvrl uvst qphk ijll"
+
+    # Asignación de campos y valores
+    msg = MIMEMultipart()
+    msg['From'] = remitente
+    msg['To'] = destinatario
+    msg['Subject'] = "Importante: Tus datos han sido guardados"
+
+    # Lectura e insercción del html personalizado en el cuerpo correo
+    with open("mail.html", "r", encoding="utf-8") as archivo_html:
+            cuerpo_html = infomail_html.read()
+    msg.attach(MIMEText(cuerpo_html, 'html'))
+
+    # Conexion al servidor SMTP y envío de email
+    try:
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.starttls()
+            server.login(remitente, password)
+
+            server.sendmail(remitente, destinatario, msg.as_string())
+            print("Email enviado correctamente")
+    except Exception as e:
+            print(f"Error al enviar el email {e}")
+
+    finally:
+            server.quit()
+
+
 # Ruta para la página principal
 @app.route('/')
 def index():
