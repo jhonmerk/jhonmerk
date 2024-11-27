@@ -28,6 +28,8 @@ def index():
 # Ruta para el procesamiento del formulario
 @app.route('/submit', methods=['POST'])
 def submit():
+    logger.info("Endpoint /submit alcanzado")
+
     try:
         #email = request.form['email']
         email = request.form.get('email')
