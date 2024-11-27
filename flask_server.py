@@ -10,7 +10,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-uri = "mongodb+srv://jhonmerk:JonDeere123!?@cluster0.kpdju.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri = os.getenv("MONGODB_URI")
 
 client = MongoClient(uri, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
