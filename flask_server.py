@@ -3,8 +3,12 @@ from flask import Flask, request, render_template, jsonify
 import pymongo
 from pymongo import MongoClient
 import os
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 mongo_uri = os.getenv("MONGODB_URI")
 
@@ -12,8 +16,9 @@ try:
     client = MongoClient(mongo_uri)
     db = client.mydatabase
     collection = db.credentials
+    logger.info("CONEXIÓN ESTABLECIDA CON MONGODB")
 except Exception as e:
-    print(f"Error al conectar a MongoDB: {e}")
+    logger.error(f"Error al conectar a MongoDB: {e}")
 
 # Ruta para la página principal
 @app.route('/')
