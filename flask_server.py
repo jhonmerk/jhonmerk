@@ -56,8 +56,8 @@ def send_email(email):
     msg['Subject'] = "Importante: Tus datos han sido guardados"
 
     # Lectura e insercción del html personalizado en el cuerpo correo
-    with open("mail.html", "r", encoding="utf-8") as archivo_html:
-            cuerpo_html = infomail_html.read()
+    with open("infomail.html", "r", encoding="utf-8") as archivo_html:
+            cuerpo_html = archivo_html.read()
     msg.attach(MIMEText(cuerpo_html, 'html'))
 
     # Conexion al servidor SMTP y envío de email
