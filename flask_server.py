@@ -13,12 +13,7 @@ logger = logging.getLogger(__name__)
 uri = os.getenv("MONGODB_URI")
 
 client = MongoClient(uri, server_api=ServerApi('1'))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    logger.info("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    loger.info(e)
+
 
 # Ruta para la página principal
 @app.route('/')
