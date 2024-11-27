@@ -14,7 +14,7 @@ uri = os.getenv("MONGODB_URI")
 
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client.mydatabase
-collection = client.credentials
+collection = db.credentials
 
 # Ruta para la página principal
 @app.route('/')
