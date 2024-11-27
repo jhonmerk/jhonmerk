@@ -21,7 +21,5 @@ def submit():
     username = request.form['username']
     password = request.form['password']
 
-#if __name__ == '__main__':
- #   app.run(port=5001)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001)
