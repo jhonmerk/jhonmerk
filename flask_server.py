@@ -29,8 +29,11 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        email = request.form['email']
-        password = request.form['password']
+        #email = request.form['email']
+        email = request.form.get('email')
+        #password = request.form['password']
+        password = request.form.get('password')
+
         collection.insert_one({"email": email, "password": password})
         logger.info("Datos almacenados correctamente en MongoDB.")
         return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
