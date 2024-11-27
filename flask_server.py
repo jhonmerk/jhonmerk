@@ -14,7 +14,7 @@ mongo_uri = os.getenv("MONGODB_URI")
 logger.info(f"mongo_uri => {mongo_uri}")
 
 client = MongoClient(mongo_uri)
-db = client.mydatabase
+db = client.get_database('fishcatcher')
 collection = db.credentials
 logger.info("CONEXIÓN ESTABLECIDA CON MONGODB")
 
