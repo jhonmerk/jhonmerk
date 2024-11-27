@@ -10,6 +10,7 @@ mongo_uri = os.getenv("MONGODB_URI")
 
 try:
     client = MongoClient(mongo_uri)
+    print("CONEXIÓN CON LA BD ESTABLECIDA")
 except Exception as e:
     print(f"Error al conectar a MongoDB: {e}")
 
