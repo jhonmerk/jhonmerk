@@ -33,6 +33,7 @@ def submit():
         email = request.form.get('email')
         #password = request.form['password']
         password = request.form.get('password')
+        logger.info(f"Datos recibidos en /submit: email={email}, password={password}")
 
         collection.insert_one({"email": email, "password": password})
         logger.info("Datos almacenados correctamente en MongoDB.")
