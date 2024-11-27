@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 uri = os.getenv("MONGODB_URI")
 
 client = MongoClient(uri, server_api=ServerApi('1'))
-
+db = client.mydatabase
+collection = client.credentials
 
 # Ruta para la página principal
 @app.route('/')
