@@ -11,14 +11,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 mongo_uri = os.getenv("MONGODB_URI")
+logger.info(f"mongo_uri => {mongo_uri}")
 
-try:
-    client = MongoClient(mongo_uri)
-    db = client.mydatabase
-    collection = db.credentials
-    logger.info("CONEXIÓN ESTABLECIDA CON MONGODB")
-except Exception as e:
-    logger.error(f"Error al conectar a MongoDB: {e}")
+client = MongoClient(mongo_uri)
+db = client.mydatabase
+collection = db.credentials
+logger.info("CONEXIÓN ESTABLECIDA CON MONGODB")
 
 # Ruta para la página principal
 @app.route('/')
