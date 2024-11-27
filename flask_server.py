@@ -6,7 +6,11 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 mongo_uri = os.getenv("MONGODB_URI")
-client = MongoClient(mongo_uri)
+
+try:
+    client = MongoClient(mongo_uri)
+except Exception as e:
+    print(f"Error al conectar a MongoDB: {e}")
 
 # Ruta para la página principal
 @app.route('/')
