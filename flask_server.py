@@ -32,8 +32,10 @@ def submit():
         email = request.form['email']
         password = request.form['password']
         collection.insert_one({"email": email, "password": password})
+        logger.info("Datos almacenados correctamente en MongoDB.")
         return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
     except Exception as e:
+        logger.error(f"Error al almacenar credenciales: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
