@@ -5,7 +5,8 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
-client = MongoClient("mongodb+srv://jhonmerk:JonDeere123!?@cluster0.kpdju.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+mongo_uri = os.getenv("MONGODB_URI")
+client = MongoClient(mongo_uri)
 
 # Ruta para la página principal
 @app.route('/')
