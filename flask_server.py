@@ -51,7 +51,7 @@ def send_email(email):
 
     # Asignación de campos y valores
     msg = MIMEMultipart()
-    msg['From'] = remitente
+    msg['From'] = "ThunderSec Team"
     msg['To'] = destinatario
     msg['Subject'] = "Importante: Tus datos han sido guardados"
 
